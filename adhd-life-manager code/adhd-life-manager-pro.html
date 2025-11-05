@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADHD Life Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a0dad, #a45ee5);
+            color: white;
+            margin: 0;
+            padding: 0;
+            transition: background 0.5s;
+        }
+        .dark-mode {
+            background: linear-gradient(to right, #3e1a78, #6a0dad);
+        }
+        header {
+            padding: 20px;
+            text-align: center;
+        }
+        .task-list {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .list {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            width: 30%;
+            min-height: 300px;
+            overflow-y: auto;
+        }
+        .task {
+            background: rgba(255, 255, 255, 0.2);
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: move;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .stats {
+            margin: 20px;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .task-list {
+                flex-direction: column;
+                align-items: center;
+            }
+            .list {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ADHD Life Manager</h1>
+        <button id="toggleDarkMode">Toggle Dark Mode</button>
+    </header>
+    <div class="task-list">
+        <div class="list" id="todayList">
+            <h2>Today</h2>
+            <div id="todayTasks"></div>
+        </div>
+        <div class="list" id="weekList">
+            <h2>This Week</h2>
+            <div id="weekTasks"></div>
+        </div>
+        <div class="list" id="somedayList">
+            <h2>Someday</h2>
+            <div id="somedayTasks"></div>
+        </div>
+    </div>
+    <div class="stats">
+        <h2>Stats Dashboard</h2>
+        <p id="taskCount">Total Tasks: 0</p>
+    </div>
+    <button id="openBrainDump">Brain Dump</button>
+    <button id="openFocusTimer">Focus Timer</button>
+    <button id="openEnergyCheck">Energy Check</button>
+    <button id="openMedicationLog">Medication Log</button>
+
+    <div id="brainDumpModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeBrainDump">&times;</span>
+            <h2>Brain Dump</h2>
+            <textarea id="brainDumpInput" rows="5" placeholder="Write your thoughts..."></textarea>
+            <button id="saveBrainDump">Save</button>
+        </div>
+    </div>
+
+    <div id="focusTimerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeFocusTimer">&times;</span>
+            <h2>Focus Timer</h2>
+            <input type="number" id="focusTime" placeholder="Minutes" />
+            <button id="startFocusTimer">Start</button>
+        </div>
+    </div>
+
+    <div id="energyCheckModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeEnergyCheck">&times;</span>
+            <h2>Energy Check</h2>
+            <input type="text" id="energyLevel" placeholder="How do you feel?" />
+            <button id="saveEnergyCheck">Save</button>
+        </div>
+    </div>
+
+    <div id="medicationLogModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeMedicationLog">&times;</span>
+            <h2>Medication Log</h2>
+            <textarea id="medicationLogInput" rows="5" placeholder="Log your medication..."></textarea>
+            <button id="saveMedicationLog">Save</button>
+        </div>
+    </div>
+
+    <script>
+        const todayTasks = document.getElementById('todayTasks');
+        const weekTasks = document.getElementById('weekTasks');
+        const somedayTasks = document.getElementById('somedayTasks');
+        const taskCount = document.getElementById('taskCount');
+
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || { today: [], week: [], someday: [] };
+
+        function renderTasks() {
+            todayTasks.innerHTML = '';
+            weekTasks.innerHTML = '';
+            somedayTasks.innerHTML = '';
+            tasks.today.forEach(task => addTaskElement(todayTasks, task));
+            tasks.week.forEach(task => addTaskElement(weekTasks, task));
+            tasks.someday.forEach(task => addTaskElement(somedayTasks, task));
+            taskCount.innerText = `Total Tasks: ${tasks.today.length + tasks.week.length + tasks.someday.length}`;
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        function addTaskElement(container, task) {
+            const taskElement = document.createElement('div');
+            taskElement.className = 'task';
+            taskElement.draggable = true;
+            taskElement.innerText = task;
+            taskElement.ondragstart = (e) => e.dataTransfer.setData('text/plain', task);
+            container.appendChild(taskElement);
+        }
+
+        document.getElementById('openBrainDump').onclick = () => document.getElementById('brainDumpModal').style.display = 'block';
+        document.getElementById('closeBrainDump').onclick = () => document.getElementById('brainDumpModal').style.display = 'none';
+        document.getElementById('saveBrainDump').onclick = () => {
+            const input = document.getElementById('brainDumpInput').value;
+            if (input) {
+                tasks.today.push(input);
+                renderTasks();
+                document.getElementById('brainDumpModal').style.display = 'none';
+                document.getElementById('brainDumpInput').value = '';
+            }
+        };
+
+        document.getElementById('toggleDarkMode').onclick = () => {
+            document.body.classList.toggle('dark-mode');
+        };
+
+        renderTasks();
+    </script>
+</body>
+</html>
