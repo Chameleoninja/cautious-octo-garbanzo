@@ -1,0 +1,136 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║              🧠 ADHD LIFE MANAGER - QUICK START              ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📌 INSTALLATION (One-time, 30 seconds)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open Terminal
+2. Navigate to where you saved the files
+3. Run: python3 adhd_life_manager.py
+
+That's it! The program creates your data file automatically.
+
+
+📌 YOUR FIRST 5 MINUTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+When you first launch:
+
+1. Choose option 1: "Brain Dump"
+   → Type everything on your mind, one per line
+   → Press Enter twice when done
+   → Sort items into Today/This Week/Someday
+
+2. Choose option 3: "View Today"
+   → Pick your ONE thing to start with
+   → Just start - you don't have to finish
+
+3. You're done! Program is set up.
+
+
+📌 DAILY USAGE (5 minutes morning + 2 minutes evening)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+MORNING ROUTINE:
+  1. Launch program
+  2. Option 4: Daily Review
+  3. Pick 1-3 tasks for today
+  4. Start with ONE
+
+DURING DAY:
+  • Option 2: Quick Capture (when ideas strike)
+  • Option 6: Focus Session (when ready to work)
+  
+EVENING:
+  • Option 3: View Today (mark things complete)
+  • Option 1: Brain Dump (clear your mind)
+
+
+📌 THE THREE RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. ONE THING AT A TIME
+   Maximum 3 tasks for Today. That's it.
+
+2. MAKE IT STUPIDLY EASY
+   If a task feels impossible, break it smaller.
+   "Clean garage" → "Fill one trash bag"
+
+3. NEVER MISS TWICE
+   Missed yesterday? That's fine. Do it today.
+   The goal is consistency, not perfection.
+
+
+📌 WHEN YOU'RE OVERWHELMED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open program
+2. Option 1: Brain Dump (get it all out)
+3. Option 3: Today (pick ONE tiny thing)
+4. Do that ONE thing for 15 minutes
+5. Stop. You're done. You succeeded.
+
+
+📌 KEY FEATURES YOU'LL USE MOST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Option 1  - Brain Dump       (clear mental clutter)
+Option 2  - Quick Capture    (capture ideas instantly)
+Option 3  - View Today       (your ONE thing)
+Option 4  - Daily Review     (5-min planning)
+Option 5  - Work Tasks       (organize by context)
+Option 6  - Focus Session    (timed work)
+Option 7  - Energy Check     (track patterns)
+Option 11 - Medication Log   (optimize Vyvanse timing)
+Option 12 - Weekly Review    (15-min reflection)
+
+
+📌 PRO TIPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Use Quick Capture constantly - don't let ideas sit in your head
+✓ Today list should ALWAYS have 1-3 items (never 0, never 4+)
+✓ Break big tasks into 5-minute versions
+✓ Log medication time daily to find your peak productivity window
+✓ Do weekly review on Sunday evening or Friday afternoon
+✓ If something stays on This Week for 2+ weeks, move to Someday
+✓ Celebrate small wins - they count!
+
+
+📌 COMMON QUESTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Q: Where is my data stored?
+A: ~/.adhd_life_manager.json (in your home directory)
+
+Q: Can I use this on multiple computers?
+A: You can copy the .json file between computers
+
+Q: What if I want to start over?
+A: Delete ~/.adhd_life_manager.json and relaunch
+
+Q: Can I use this on my phone?
+A: Not directly - it's terminal-based. But you can access via SSH!
+
+Q: What if I forget to use it for a week?
+A: No problem! Just launch it and do a Brain Dump. Start fresh.
+
+
+📌 HELP & SUPPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Read the full README.md for detailed instructions.
+
+The program is designed to be self-explanatory - every menu
+tells you exactly what to do.
+
+Remember: This tool is FOR you, not AGAINST you. Use what works,
+ignore what doesn't. The goal is to make life easier, not harder.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+          START NOW: python3 adhd_life_manager.py
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

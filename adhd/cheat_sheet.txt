@@ -1,0 +1,206 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║           🧠 ADHD LIFE MANAGER - CHEAT SHEET                 ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────┐
+│  QUICK MENU REFERENCE                                       │
+└─────────────────────────────────────────────────────────────┘
+
+  1  - Brain Dump          | Get everything out of your head
+  2  - Quick Capture       | Add single task/idea (2 seconds)
+  3  - View Today          | See your 1-3 tasks for today
+  4  - Daily Review        | 5-minute morning planning
+  5  - Work Tasks          | Tasks organized by context
+  6  - Focus Session       | Start timed work session
+  7  - Energy Check        | Log how you're feeling
+  8  - Projects            | Multi-step goals
+  9  - Routines            | Morning/evening habits
+  10 - Habits              | Track recurring behaviors
+  11 - Medication Log      | Track Vyvanse timing
+  12 - Weekly Review       | 15-minute reflection
+  13 - Settings            | Configure program
+  0  - Exit                | Save and quit
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  DAILY WORKFLOW (7 minutes total)                           │
+└─────────────────────────────────────────────────────────────┘
+
+MORNING (5 min):
+  1. Launch program
+  2. Option 4: Daily Review
+  3. Pick 1-3 tasks for Today
+  4. Start with ONE
+
+DURING DAY:
+  • Option 2 when ideas strike
+  • Option 6 when ready to focus
+  • Option 7 to track energy
+
+EVENING (2 min):
+  • Option 3: Mark tasks complete
+  • Add tomorrow's ONE thing
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  THE THREE LISTS SYSTEM                                     │
+└─────────────────────────────────────────────────────────────┘
+
+TODAY (max 3 tasks)
+  → Things you'll do TODAY
+  → Pick your ONE thing first
+  → Never put more than 3 items here
+
+THIS WEEK (max ~10 tasks)
+  → Things in next 7 days
+  → Review daily to populate Today
+  → Source for tomorrow's tasks
+
+SOMEDAY/MAYBE (unlimited)
+  → Ideas, projects, "would be nice"
+  → Review monthly, not daily
+  → Keeps brain clear without losing ideas
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  CONTEXTS (Work Tasks Menu)                                 │
+└─────────────────────────────────────────────────────────────┘
+
+WORK      → Things requiring computer/office
+HOME      → Things at house
+ERRANDS   → Things while out
+CALLS     → Phone calls/emails
+WAITING   → Waiting for someone else
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  WHEN TO USE EACH FEATURE                                   │
+└─────────────────────────────────────────────────────────────┘
+
+BRAIN DUMP (Option 1)
+  → When: Overwhelmed, can't focus, mind racing
+  → Takes: 5-10 minutes
+  → Result: Clear head, organized tasks
+
+QUICK CAPTURE (Option 2)
+  → When: Random idea strikes
+  → Takes: 10 seconds
+  → Result: Idea saved, mind free
+
+DAILY REVIEW (Option 4)
+  → When: Every morning
+  → Takes: 5 minutes
+  → Result: Day planned, know what to do
+
+FOCUS SESSION (Option 6)
+  → When: Ready to work, have energy
+  → Takes: 25 minutes
+  → Result: Deep work completed
+
+ENERGY CHECK (Option 7)
+  → When: 2-3 times per day
+  → Takes: 30 seconds
+  → Result: Learn your patterns
+
+WEEKLY REVIEW (Option 12)
+  → When: Sunday evening or Friday afternoon
+  → Takes: 15 minutes
+  → Result: Clean system, next week planned
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  KEYBOARD SHORTCUTS IN MENUS                                │
+└─────────────────────────────────────────────────────────────┘
+
+[number]  → Toggle task complete/incomplete
+a         → Add new task
+d         → Delete task
+m         → Move task to different list
+0         → Back/Exit
+
+Press Enter to submit
+Press Ctrl+C to force quit (data auto-saves)
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  TROUBLESHOOTING                                            │
+└─────────────────────────────────────────────────────────────┘
+
+PROBLEM: Can't launch program
+FIX: python3 adhd_life_manager.py
+     Make sure you're in the right directory
+
+PROBLEM: Lost my data
+FIX: Check ~/.adhd_life_manager.json
+     Look for backup files
+
+PROBLEM: Want to start fresh
+FIX: Delete ~/.adhd_life_manager.json
+     Program creates new file on next launch
+
+PROBLEM: Too many tasks everywhere
+FIX: Do a Weekly Review (Option 12)
+     Move old stuff to Someday or delete
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  ADHD-FRIENDLY REMINDERS                                    │
+└─────────────────────────────────────────────────────────────┘
+
+✓ ONE thing at a time (never more than 3 for Today)
+✓ Make it stupidly easy (break tasks smaller)
+✓ Never miss twice in a row
+✓ Future you doesn't exist (plan for tired you)
+✓ Progress > Perfection
+✓ It's okay to have bad days
+✓ The system works if you use it (even imperfectly)
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  MEDICATION OPTIMIZATION TIPS                               │
+└─────────────────────────────────────────────────────────────┘
+
+1. Log Vyvanse time daily (Option 11)
+2. Check energy 2-3x/day (Option 7)
+3. After 2 weeks, review patterns
+4. Note your peak focus window
+5. Schedule hard tasks during peak
+6. Accept lower energy outside peak
+7. Adjust expectations accordingly
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  QUICK TIPS                                                 │
+└─────────────────────────────────────────────────────────────┘
+
+• Use Quick Capture obsessively - don't hold ideas in head
+• Keep Today list at 1-3 items ALWAYS
+• If task sits in This Week 2+ weeks → Someday or delete
+• Celebrate completing even ONE thing
+• Weekly Review keeps system from getting cluttered
+• When overwhelmed: Brain Dump → pick ONE thing → 15 min
+• The program auto-saves - you can quit anytime
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  DATA FILE LOCATION                                         │
+└─────────────────────────────────────────────────────────────┘
+
+All data stored in: ~/.adhd_life_manager.json
+
+Backup command:
+  cp ~/.adhd_life_manager.json ~/adhd_backup_$(date +%Y%m%d).json
+
+View data:
+  cat ~/.adhd_life_manager.json
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+              MOST IMPORTANT: JUST START
+              
+  Don't try to use every feature at once.
+  Start with Brain Dump (1) and Today (3).
+  Add more features when you're ready.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

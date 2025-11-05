@@ -1,0 +1,276 @@
+═══════════════════════════════════════════════════════════════
+                    ADHD LIFE MANAGER
+                  INTERACTIVE DEMO WALKTHROUGH
+═══════════════════════════════════════════════════════════════
+
+This walkthrough shows you exactly how to use the program for
+the first time. Follow along step by step!
+
+═══════════════════════════════════════════════════════════════
+SCENARIO: It's Monday morning, you just took your Vyvanse,
+and your brain is already screaming about 15 different things.
+═══════════════════════════════════════════════════════════════
+
+┌───────────────────────────────────────────────────────────┐
+│ STEP 1: LAUNCH THE PROGRAM                               │
+└───────────────────────────────────────────────────────────┘
+
+Terminal Command:
+  $ python3 adhd_life_manager.py
+
+You see the main menu with options 1-13.
+
+
+┌───────────────────────────────────────────────────────────┐
+│ STEP 2: BRAIN DUMP (Clear your mental RAM)               │
+└───────────────────────────────────────────────────────────┘
+
+You choose: 1
+
+The program asks you to type everything on your mind.
+You type:
+
+  → call mom about her birthday
+  → fix weird noise in car
+  → reply to Sarah's email
+  → buy groceries
+  → finish report for work
+  → clean kitchen
+  → pay electric bill
+  → research new laptop
+  → organize closet
+  → schedule dentist appointment
+  → [press Enter]
+  → [press Enter again to finish]
+
+Program captures 10 items!
+
+
+┌───────────────────────────────────────────────────────────┐
+│ STEP 3: SORT BRAIN DUMP                                   │
+└───────────────────────────────────────────────────────────┘
+
+Program asks: "Where should 'call mom about her birthday' go?"
+  You choose: 1 (Today)
+
+Program asks: "Where should 'fix weird noise in car' go?"
+  You choose: 2 (This Week)
+
+Program asks: "Where should 'reply to Sarah's email' go?"
+  You choose: 1 (Today)
+
+Program says: "Today is full (3 max). Adding to This Week."
+  Smart! It protects you from overwhelm.
+
+You continue sorting:
+  - "buy groceries" → Today (now you have 2)
+  - "finish report for work" → Today (now you have 3)
+  - "pay electric bill" → This Week
+  - "research new laptop" → Someday/Maybe
+  - Everything else → This Week or Someday
+
+✓ Done! Your brain is now clear.
+
+
+┌───────────────────────────────────────────────────────────┐
+│ STEP 4: VIEW TODAY (Pick your ONE thing)                 │
+└───────────────────────────────────────────────────────────┘
+
+You're back at main menu. You choose: 3
+
+You see:
+  1. [○] call mom about her birthday
+  2. [○] buy groceries  
+  3. [○] finish report for work
+
+Program asks what to do. You choose: 1
+(Toggle task 1 - but you haven't done it yet, so let's start it!)
+
+
+┌───────────────────────────────────────────────────────────┐
+│ STEP 5: START A FOCUS SESSION                            │
+└───────────────────────────────────────────────────────────┘
+
+You go back to main menu. You choose: 6
+
+Program says: "What are you working on?"
+You type: → finish work report
+
+Program says: "Set a timer for 25 minutes and come back."
+
+You set your phone timer and start working...
+
+[25 minutes later]
+
+You press Enter. Program asks: "How did it go?"
+You choose: 2 (Made good progress)
+
+✓ Focus session logged!
+
+
+┌───────────────────────────────────────────────────────────┐
+│ STEP 6: MARK TASK COMPLETE                               │
+└───────────────────────────────────────────────────────────┘
+
+You choose option 3 again (View Today)
+
+You see:
+  1. [○] call mom about her birthday
+  2. [○] buy groceries
+  3. [○] finish report for work
+
+You choose: 3 (to mark report complete)
+
+Program says: "🎉 Great job! You completed: finish report for work"
+
+Now your list shows:
+  1. [○] call mom about her birthday
+  2. [○] buy groceries
+  3. [✓] finish report for work
+
+You feel good! One thing done!
+
+
+┌───────────────────────────────────────────────────────────┐
+│ STEP 7: QUICK CAPTURE (Idea strikes!)                    │
+└───────────────────────────────────────────────────────────┘
+
+You're about to leave for groceries when you remember something.
+
+You choose: 2 (Quick Capture)
+
+You type: → pick up prescription at pharmacy
+
+Program asks where it goes. You choose: 2 (This Week)
+
+✓ Captured! It's not forgotten, and it's not cluttering "Today."
+
+
+┌───────────────────────────────────────────────────────────┐
+│ STEP 8: WORK CONTEXTS                                    │
+└───────────────────────────────────────────────────────────┘
+
+After groceries, you're at your desk with energy to do work tasks.
+
+You choose: 5 (Work Tasks)
+
+Then choose: 1 (Work context)
+
+You see all your work-related tasks in one place:
+  - Email team about deadline
+  - Update spreadsheet
+  - Call client back
+
+You work through these, marking them complete as you go.
+
+
+┌───────────────────────────────────────────────────────────┐
+│ STEP 9: ENERGY CHECK (Track patterns)                    │
+└───────────────────────────────────────────────────────────┘
+
+It's 3pm. You feel tired.
+
+You choose: 7 (Energy Check)
+
+Energy level: 2 (Low)
+Focus level: 2 (Very distracted)
+Notes: → medication wearing off
+
+Program logs it and says:
+  "💡 Low energy detected:
+   • Take a break
+   • Drink water  
+   • Accept you might not be super productive right now"
+
+This helps you learn your patterns!
+
+
+┌───────────────────────────────────────────────────────────┐
+│ STEP 10: MEDICATION LOG                                  │
+└───────────────────────────────────────────────────────────┘
+
+Tomorrow morning, you take your Vyvanse at 8:00 AM.
+
+You choose: 11 (Medication Log)
+Then: 1 (Log medication taken now)
+
+"Did you eat before taking it?" → y
+
+✓ Logged!
+
+After 2 weeks of logging, you'll see patterns:
+  - Best focus: 10am-2pm (2-6 hours after meds)
+  - Schedule hard tasks during this window
+  - Accept lower energy in evenings
+
+
+┌───────────────────────────────────────────────────────────┐
+│ STEP 11: EVENING ROUTINE                                 │
+└───────────────────────────────────────────────────────────┘
+
+It's 9pm. You're done for the day.
+
+You choose: 3 (View Today)
+
+You see:
+  1. [✓] call mom about her birthday (you did this!)
+  2. [✓] buy groceries (done!)
+  3. [✓] finish report for work (done!)
+
+All 3 tasks complete! 🎉
+
+You choose: 2 (Add new task)
+
+You type tomorrow's ONE thing:
+  → pay electric bill
+
+✓ Ready for tomorrow!
+
+
+┌───────────────────────────────────────────────────────────┐
+│ STEP 12: WEEKLY REVIEW (Sunday evening)                  │
+└───────────────────────────────────────────────────────────┘
+
+It's Sunday. Time to reflect.
+
+You choose: 12 (Weekly Review)
+
+Program shows:
+  "🎉 THIS WEEK'S WINS:
+    ✓ finish report for work
+    ✓ call mom about her birthday
+    ✓ buy groceries
+    ✓ pay electric bill
+    ✓ reply to Sarah's email
+    
+   📊 Total wins: 5"
+
+Program asks: "What about unfinished tasks?"
+You move them to This Week or delete them.
+
+Program asks: "Anything from Someday ready to move up?"
+You review your Someday list and promote 2 items.
+
+✓ Ready for next week!
+
+
+═══════════════════════════════════════════════════════════════
+                    KEY TAKEAWAYS
+═══════════════════════════════════════════════════════════════
+
+✓ Brain Dump clears mental clutter instantly
+✓ Today list keeps you focused (max 3 tasks)
+✓ Quick Capture means nothing gets forgotten
+✓ Contexts organize by WHERE you can do tasks
+✓ Focus Sessions structure your work time
+✓ Energy tracking reveals your patterns
+✓ Weekly Review keeps the system clean
+
+═══════════════════════════════════════════════════════════════
+
+                    YOU'RE READY!
+
+         Launch the program and start with Step 1.
+         You'll figure out the rest as you go.
+
+═══════════════════════════════════════════════════════════════

@@ -1,0 +1,325 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║     🧠 ADHD LIFE MANAGER - GUI VERSION GUIDE                 ║
+║                                                               ║
+║     Beautiful, Color-Coded, Visual Interface                  ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+
+🎨 WHAT YOU GOT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+A stunning visual ADHD management app with:
+
+✅ Color-coded task lists
+✅ Drag-and-drop between lists
+✅ Checkboxes to mark complete
+✅ Priority levels (red/yellow/blue)
+✅ Built-in focus timer
+✅ Energy tracking
+✅ Medication logging
+✅ Real-time statistics
+✅ Today's wins celebration
+✅ Auto-saves everything locally
+
+
+🚀 GETTING STARTED (30 seconds)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Double-click: adhd-life-manager-gui.html
+2. It opens in your web browser
+3. Start adding tasks!
+
+That's it! No installation, no setup, no internet needed.
+Everything saves automatically to your browser.
+
+
+🎨 COLOR-CODED SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Each list has its own color:
+
+🔥 TODAY (Red)
+   • Max 3 tasks
+   • Your focus for right now
+   • Drag tasks here from other lists
+
+📅 THIS WEEK (Teal)
+   • Next 7 days
+   • Source for tomorrow's tasks
+   • Review daily
+
+💭 SOMEDAY/MAYBE (Purple)
+   • Future ideas
+   • Not urgent
+   • Review monthly
+
+💼 WORK (Pink)
+   • Office/computer tasks
+   • Context-based
+
+🏠 HOME (Yellow)
+   • Household tasks
+   • Context-based
+
+
+✨ KEY FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CHECKBOXES ✓
+  • Click checkbox to mark complete
+  • Task gets crossed out
+  • Automatically adds to "Today's Wins"
+  • Counter updates instantly
+
+DRAG & DROP 🖱️
+  • Click and hold any task
+  • Drag to different list
+  • Drop to move it
+  • Super satisfying!
+
+PRIORITY COLORS 🎨
+  • 🔴 High priority (red border)
+  • 🟡 Medium priority (yellow border)
+  • 🔵 Low priority (blue border)
+  • Click priority button to cycle
+
+QUICK ADD ⚡
+  • Type in any box
+  • Press Enter or click Add
+  • Task appears instantly
+
+DELETE 🗑️
+  • Click trash icon
+  • Confirms before deleting
+  • Keeps lists clean
+
+
+🔥 QUICK ACTION BUTTONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🧠 BRAIN DUMP
+  • Click button at top
+  • Type everything on your mind
+  • One item per line
+  • Auto-sorts into lists
+  • Clears mental clutter instantly
+
+⏱️ FOCUS SESSION
+  • Choose duration (15-60 min)
+  • Enter what you're working on
+  • Timer counts down
+  • Beeps when done
+  • Tracks focus patterns
+
+⚡ ENERGY CHECK
+  • Rate energy: 1-5
+  • Rate focus: 1-5
+  • Add notes
+  • Find your peak times
+  • Optimize medication timing
+
+💊 LOG MEDICATION
+  • Record time taken
+  • Note if you ate first
+  • Track side effects
+  • Find optimal timing
+
+
+📊 LIVE STATISTICS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Top of screen shows:
+  • TODAY: # of tasks (turns red at 3)
+  • THIS WEEK: total count
+  • COMPLETED TODAY: what you finished
+  • TOTAL WINS: lifetime completions
+
+Updates in real-time as you work!
+
+
+🎯 HOW TO USE IT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+MORNING ROUTINE (5 minutes):
+  1. Open the app
+  2. Look at THIS WEEK list
+  3. Drag 1-3 tasks to TODAY
+  4. Start with your ONE thing
+  5. Check the box when done!
+
+DURING THE DAY:
+  • Click 🧠 Brain Dump when overwhelmed
+  • Use ⏱️ Focus Session when ready to work
+  • Quick add tasks as they come up
+  • Drag to reorganize
+  • Check off completed items
+
+EVENING (2 minutes):
+  • Check off remaining tasks
+  • Look at Today's Wins (celebrate!)
+  • Add tomorrow's ONE thing to Today
+
+
+💡 PRO TIPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Keep Today at 1-3 tasks (app prevents more)
+✓ Use priority colors to know what's urgent
+✓ Drag tasks between lists freely
+✓ Brain dump when mind is racing
+✓ Track energy 2-3 times daily
+✓ Use focus timer for hard tasks
+✓ Check Today's Wins for motivation
+
+
+🎨 VISUAL FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ANIMATIONS:
+  • Tasks slide in when added
+  • Hover effects on buttons
+  • Smooth drag and drop
+  • Satisfying checkboxes
+
+COLOR CODING:
+  • Each list has unique color
+  • Priority borders (red/yellow/blue)
+  • Completed tasks fade out
+  • Visual hierarchy everywhere
+
+RESPONSIVE:
+  • Works on desktop
+  • Works on tablet
+  • Adapts to screen size
+  • Beautiful on all devices
+
+
+💾 DATA STORAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Everything saves AUTOMATICALLY to your browser's local storage.
+
+BENEFITS:
+  ✓ No account needed
+  ✓ No internet required
+  ✓ Completely private
+  ✓ Instant saving
+  ✓ No syncing delays
+
+BACKUP:
+  • Data stays in browser
+  • Open same file = same data
+  • Copy HTML file to backup
+  • Works offline forever
+
+
+⌨️ KEYBOARD SHORTCUTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Enter      → Add task (when in input box)
+Escape     → Close any modal
+Click/Drag → Move tasks between lists
+Checkbox   → Mark complete
+
+
+🎉 TODAY'S WINS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Special card in bottom right shows:
+  • Everything you completed today
+  • Time you completed it
+  • Green celebration theme
+  • Motivation boost!
+
+
+🔧 TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Q: Lost my data?
+A: Data is stored in browser. Use same browser and file.
+
+Q: Want to reset?
+A: Clear browser data for that site, or open in incognito.
+
+Q: Share between devices?
+A: Copy the HTML file. Data stays in each browser.
+
+Q: Doesn't work?
+A: Make sure JavaScript is enabled in browser.
+
+Q: Want to backup?
+A: Copy the HTML file. That's your backup!
+
+
+📱 MOBILE USE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Works great on phones and tablets!
+  • Responsive design
+  • Touch-friendly
+  • Drag with finger
+  • Looks beautiful
+  • Same features
+
+
+🎯 DAILY WORKFLOW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+MORNING:
+  1. Open app
+  2. Drag 1-3 tasks to TODAY (red list)
+  3. Pick your ONE thing
+  4. Click Focus Session
+  5. Start working!
+
+MIDDAY:
+  • Check off completed items
+  • Quick add new tasks
+  • Energy check
+  • Start another focus session
+
+EVENING:
+  • Mark remaining complete
+  • Admire Today's Wins
+  • Drag tomorrow's task to Today
+  • Close feeling accomplished
+
+
+✨ WHY THIS WORKS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+VISUAL:
+  • Colors help categorize
+  • See everything at once
+  • Satisfying to check off
+  • Beautiful interface
+
+ADHD-FRIENDLY:
+  • Limits overwhelm (3 max today)
+  • Quick capture
+  • Drag and drop (fun!)
+  • External memory
+  • No complicated features
+
+MOTIVATING:
+  • See progress instantly
+  • Celebrate wins
+  • Pretty colors
+  • Smooth animations
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+              🎨 READY TO START?
+              
+  1. Double-click: adhd-life-manager-gui.html
+  2. Click 🧠 Brain Dump
+  3. Type everything on your mind
+  4. Watch it organize automatically!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+This is YOUR beautiful, visual ADHD management system!
+Enjoy the colors, the animations, and the satisfaction of
+checking things off. You've got this! 🌟
