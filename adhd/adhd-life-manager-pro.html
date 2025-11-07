@@ -1185,6 +1185,43 @@
         </div>
     </div>
 
+    <div class="modal" id="weeklyReviewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📊 Weekly Review</h2>
+                <button class="modal-close" onclick="closeModal('weeklyReviewModal')">&times;</button>
+            </div>
+
+            <div class="form-group">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">🎉 This Week's Wins</h3>
+                <div id="weeklyWinsList" style="background: #e8f5e9; padding: 15px; border-radius: 8px; max-height: 200px; overflow-y: auto;">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">⚡ Energy Patterns</h3>
+                <div id="weeklyEnergyStats" style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">⏱️ Focus Time</h3>
+                <div id="weeklyFocusStats" style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">📝 Notes & Reflections</h3>
+                <textarea id="weeklyNotes" placeholder="What went well? What could improve next week?" style="min-height: 100px;"></textarea>
+            </div>
+
+            <button class="add-btn" style="width: 100%;" onclick="closeModal('weeklyReviewModal')">Done</button>
+        </div>
+    </div>
+
     <div class="notification" id="notification"></div>
 
     <script>
@@ -1608,6 +1645,82 @@
             const now = new Date();
             document.getElementById('medicationTime').value = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
             document.getElementById('medicationLogModal').classList.add('show');
+        }
+
+        function openWeeklyReview() {
+            // Calculate weekly stats
+            const now = new Date();
+            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+            // Get wins from past 7 days
+            const weeklyWins = data.wins.filter(w => new Date(w.date) >= weekAgo);
+            const winsEl = document.getElementById('weeklyWinsList');
+            if (weeklyWins.length === 0) {
+                winsEl.innerHTML = '<p style="color: #666; text-align: center;">No completed tasks this week yet</p>';
+            } else {
+                winsEl.innerHTML = weeklyWins.map(win => `
+                    <div style="padding: 8px; background: white; border-radius: 6px; margin-bottom: 6px; border-left: 3px solid #4caf50;">
+                        ✓ ${win.text}
+                        <div style="font-size: 0.8em; color: #666; margin-top: 3px;">
+                            ${new Date(win.date).toLocaleDateString()}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Energy patterns
+            const weeklyEnergy = data.energyLog.filter(e => new Date(e.timestamp) >= weekAgo);
+            const energyEl = document.getElementById('weeklyEnergyStats');
+            if (weeklyEnergy.length === 0) {
+                energyEl.innerHTML = '<p style="color: #666;">No energy logs this week</p>';
+            } else {
+                const avgEnergy = (weeklyEnergy.reduce((sum, e) => sum + e.energy, 0) / weeklyEnergy.length).toFixed(1);
+                const avgFocus = (weeklyEnergy.reduce((sum, e) => sum + e.focus, 0) / weeklyEnergy.length).toFixed(1);
+                energyEl.innerHTML = `
+                    <div style="display: flex; justify-content: space-around;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2em; font-weight: bold; color: var(--primary);">${avgEnergy}/5</div>
+                            <div style="color: #666;">Avg Energy</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2em; font-weight: bold; color: var(--primary);">${avgFocus}/5</div>
+                            <div style="color: #666;">Avg Focus</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2em; font-weight: bold; color: var(--primary);">${weeklyEnergy.length}</div>
+                            <div style="color: #666;">Check-ins</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Focus time
+            const weeklyFocus = data.focusSessions.filter(f => new Date(f.completed) >= weekAgo);
+            const focusEl = document.getElementById('weeklyFocusStats');
+            if (weeklyFocus.length === 0) {
+                focusEl.innerHTML = '<p style="color: #666;">No focus sessions this week</p>';
+            } else {
+                const totalMinutes = weeklyFocus.reduce((sum, f) => sum + f.duration, 0);
+                const totalHours = (totalMinutes / 60).toFixed(1);
+                focusEl.innerHTML = `
+                    <div style="display: flex; justify-content: space-around;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2em; font-weight: bold; color: var(--primary);">${totalHours}h</div>
+                            <div style="color: #666;">Total Focus</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2em; font-weight: bold; color: var(--primary);">${weeklyFocus.length}</div>
+                            <div style="color: #666;">Sessions</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2em; font-weight: bold; color: var(--primary);">${Math.round(totalMinutes / 7)}</div>
+                            <div style="color: #666;">Min/Day</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('weeklyReviewModal').classList.add('show');
         }
 
         function closeModal(modalId) {
