@@ -2,10 +2,24 @@
 
 ## Files in this Directory
 
-### `adhd-life-manager-pro-enhanced.html`
-**The complete, enhanced version with all Phase 1 features**
+### `adhd-life-manager-pro-phase2.html` ⭐ **LATEST - RECOMMENDED**
+**The complete Phase 2 version with ALL features (10 major enhancements)**
 
-✅ **100% functional** - all features working
+✅ **100% functional** - all 10 features working perfectly
+✅ **Time blocking** - drag tasks to time blocks
+✅ **Keyboard shortcuts** - 10+ shortcuts
+✅ **Task notes** - add context to tasks
+✅ **Recurring tasks** - auto-repeat tasks
+✅ **Single file** - just open in browser
+✅ **No installation** - works immediately
+✅ **Offline-ready** - no internet needed
+
+**File size:** ~115KB
+
+### `adhd-life-manager-pro-enhanced.html`
+**Phase 1 version (6 core features)**
+
+✅ **100% functional** - Phase 1 features working
 ✅ **Single file** - just open in browser
 ✅ **No installation** - works immediately
 ✅ **Offline-ready** - no internet needed
