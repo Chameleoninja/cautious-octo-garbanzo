@@ -1231,6 +1231,61 @@
         </div>
     </div>
 
+    <div class="modal" id="keyboardHelpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⌨️ Keyboard Shortcuts</h2>
+                <button class="modal-close" onclick="closeModal('keyboardHelpModal')">&times;</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div>
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">🚀 Quick Actions</h3>
+                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.95em;">
+                        <div><kbd>Ctrl+B</kbd> Open Brain Dump</div>
+                        <div><kbd>Ctrl+T</kbd> Start Focus Timer</div>
+                        <div><kbd>Ctrl+E</kbd> Energy Check</div>
+                        <div><kbd>Ctrl+M</kbd> Log Medication</div>
+                        <div><kbd>Ctrl+W</kbd> Weekly Review</div>
+                        <div><kbd>Ctrl+N</kbd> Add to Today</div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">🔍 Navigation</h3>
+                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.95em;">
+                        <div><kbd>Ctrl+F</kbd> Focus Search</div>
+                        <div><kbd>Escape</kbd> Close Modal</div>
+                        <div><kbd>Enter</kbd> Submit Form</div>
+                        <div><kbd>?</kbd> Show This Help</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; font-size: 0.9em;">
+                <strong>💡 Tip:</strong> Press <kbd>?</kbd> anytime to see these shortcuts!
+            </div>
+
+            <button class="add-btn" style="width: 100%; margin-top: 15px;" onclick="closeModal('keyboardHelpModal')">Got it!</button>
+
+            <style>
+                kbd {
+                    display: inline-block;
+                    padding: 3px 8px;
+                    font-size: 0.85em;
+                    font-family: monospace;
+                    background: #f4f4f4;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+                    margin-right: 8px;
+                    min-width: 60px;
+                    text-align: center;
+                }
+            </style>
+        </div>
+    </div>
+
     <div class="notification" id="notification"></div>
 
     <script>
@@ -2146,18 +2201,84 @@
         }
 
         // Keyboard shortcuts
+        // Enhanced Keyboard Shortcuts
         document.addEventListener('keydown', function(e) {
+            // Enter to submit in input fields
             if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.id.endsWith('Input')) {
                 const listName = e.target.id.replace('Input', '');
                 addTask(listName);
+                return;
             }
-            
+
+            // Escape to close modals
             if (e.key === 'Escape') {
                 document.querySelectorAll('.modal.show').forEach(modal => {
                     modal.classList.remove('show');
                 });
+                return;
+            }
+
+            // Don't trigger shortcuts if typing in input/textarea
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+
+            // Ctrl/Cmd + Key shortcuts
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key.toLowerCase()) {
+                    case 'b':
+                        e.preventDefault();
+                        openBrainDump();
+                        break;
+                    case 'f':
+                        e.preventDefault();
+                        document.getElementById('searchBox').focus();
+                        break;
+                    case 't':
+                        e.preventDefault();
+                        openFocusTimer();
+                        break;
+                    case 'e':
+                        e.preventDefault();
+                        openEnergyCheck();
+                        break;
+                    case 'w':
+                        e.preventDefault();
+                        openWeeklyReview();
+                        break;
+                    case 'n':
+                        e.preventDefault();
+                        document.getElementById('todayInput').focus();
+                        break;
+                    case 'm':
+                        e.preventDefault();
+                        openMedicationLog();
+                        break;
+                    case '/':
+                    case '?':
+                        e.preventDefault();
+                        showKeyboardHelp();
+                        break;
+                }
+            }
+
+            // Single key shortcuts (no modifier)
+            if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+                switch(e.key) {
+                    case '?':
+                        e.preventDefault();
+                        showKeyboardHelp();
+                        break;
+                }
             }
         });
+
+        function showKeyboardHelp() {
+            const helpModal = document.getElementById('keyboardHelpModal');
+            if (helpModal) {
+                helpModal.classList.add('show');
+            }
+        }
 
         document.getElementById('focusDuration').addEventListener('change', function() {
             if (!timerRunning) {
