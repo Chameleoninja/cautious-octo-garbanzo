@@ -945,8 +945,11 @@
                                 <span>Morning Focus</span>
                                 <span class="time-range">8-10 AM</span>
                             </div>
-                            <div id="morningTasks" style="font-size: 0.9em; color: #666;">
-                                Drag tasks here
+                            <div id="morningTasks"
+                                 ondrop="dropOnTimeBlock(event, 'morning')"
+                                 ondragover="allowDrop(event)"
+                                 data-timeblock="morning"
+                                 style="min-height: 50px; font-size: 0.9em;">
                             </div>
                         </div>
                         <div class="time-block">
@@ -954,8 +957,11 @@
                                 <span>Midday Work</span>
                                 <span class="time-range">10-12 PM</span>
                             </div>
-                            <div id="middayTasks" style="font-size: 0.9em; color: #666;">
-                                Drag tasks here
+                            <div id="middayTasks"
+                                 ondrop="dropOnTimeBlock(event, 'midday')"
+                                 ondragover="allowDrop(event)"
+                                 data-timeblock="midday"
+                                 style="min-height: 50px; font-size: 0.9em;">
                             </div>
                         </div>
                         <div class="time-block">
@@ -963,8 +969,11 @@
                                 <span>Afternoon</span>
                                 <span class="time-range">2-5 PM</span>
                             </div>
-                            <div id="afternoonTasks" style="font-size: 0.9em; color: #666;">
-                                Drag tasks here
+                            <div id="afternoonTasks"
+                                 ondrop="dropOnTimeBlock(event, 'afternoon')"
+                                 ondragover="allowDrop(event)"
+                                 data-timeblock="afternoon"
+                                 style="min-height: 50px; font-size: 0.9em;">
                             </div>
                         </div>
                     </div>
@@ -1345,7 +1354,8 @@
                 priority: priority,
                 category: category,
                 time: time,
-                subtasks: []
+                subtasks: [],
+                timeBlock: null  // morning, midday, afternoon, or null
             };
             
             data.tasks[listName].push(task);
@@ -1360,6 +1370,7 @@
             renderList('week');
             renderList('someday');
             renderWins();
+            renderTimeBlocks();
             updateStats();
         }
 
@@ -1605,18 +1616,18 @@
         function drop(ev) {
             ev.preventDefault();
             ev.currentTarget.classList.remove('drag-over');
-            
+
             const taskId = parseInt(ev.dataTransfer.getData('taskId'));
             const sourceList = ev.dataTransfer.getData('sourceList');
             const targetList = ev.currentTarget.dataset.list;
-            
+
             if (sourceList === targetList) return;
-            
+
             if (targetList === 'today' && data.tasks.today.length >= 3) {
                 showNotification('Today is full! (max 3 tasks)', 'warning');
                 return;
             }
-            
+
             const task = data.tasks[sourceList].find(t => t.id === taskId);
             if (task) {
                 data.tasks[sourceList] = data.tasks[sourceList].filter(t => t.id !== taskId);
@@ -1625,6 +1636,72 @@
                 renderAll();
                 showNotification(`Moved to ${targetList}`, 'success');
             }
+        }
+
+        function dropOnTimeBlock(ev, timeBlockName) {
+            ev.preventDefault();
+            ev.currentTarget.classList.remove('drag-over');
+
+            const taskId = parseInt(ev.dataTransfer.getData('taskId'));
+            const sourceList = ev.dataTransfer.getData('sourceList');
+
+            // Find task in all lists
+            let task = null;
+            for (const list in data.tasks) {
+                task = data.tasks[list].find(t => t.id === taskId);
+                if (task) break;
+            }
+
+            if (task) {
+                // Remove from previous time block if any
+                task.timeBlock = timeBlockName;
+                saveData();
+                renderTimeBlocks();
+                renderAll();
+                showNotification(`Scheduled for ${timeBlockName}`, 'success');
+            }
+        }
+
+        function removeFromTimeBlock(taskId) {
+            // Find task in all lists
+            let task = null;
+            for (const list in data.tasks) {
+                task = data.tasks[list].find(t => t.id === taskId);
+                if (task) break;
+            }
+
+            if (task) {
+                task.timeBlock = null;
+                saveData();
+                renderTimeBlocks();
+                renderAll();
+                showNotification('Removed from time block', 'success');
+            }
+        }
+
+        function renderTimeBlocks() {
+            const blocks = ['morning', 'midday', 'afternoon'];
+
+            blocks.forEach(blockName => {
+                const blockEl = document.getElementById(blockName + 'Tasks');
+
+                // Get all tasks scheduled for this time block
+                const allTasks = [...data.tasks.today, ...data.tasks.week, ...data.tasks.someday];
+                const blockTasks = allTasks.filter(t => t.timeBlock === blockName && !t.completed);
+
+                if (blockTasks.length === 0) {
+                    blockEl.innerHTML = '<div style="color: #999; font-style: italic; padding: 8px;">Drag tasks here</div>';
+                } else {
+                    blockEl.innerHTML = blockTasks.map(task => `
+                        <div style="background: white; padding: 8px; margin-bottom: 6px; border-radius: 6px; border-left: 3px solid ${
+                            task.priority === 'high' ? '#ff6b6b' : task.priority === 'medium' ? '#ffd93d' : '#4ecdc4'
+                        }; font-size: 0.85em; display: flex; justify-content: space-between; align-items: center;">
+                            <span style="flex: 1;">${task.text}</span>
+                            <button onclick="removeFromTimeBlock(${task.id})" style="background: #ff6b6b; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.9em;">×</button>
+                        </div>
+                    `).join('');
+                }
+            });
         }
 
         // Modals
