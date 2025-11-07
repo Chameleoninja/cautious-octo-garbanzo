@@ -1326,8 +1326,22 @@
 
         function renderList(listName) {
             const listEl = document.getElementById(listName + 'List');
-            const tasks = data.tasks[listName];
-            
+            let tasks = data.tasks[listName];
+
+            // Apply view filters
+            if (currentFilter === 'today' && listName !== 'today') {
+                // Hide non-today lists in "today" view
+                listEl.closest('.card').style.display = 'none';
+                return;
+            } else {
+                listEl.closest('.card').style.display = '';
+            }
+
+            if (currentFilter === 'incomplete') {
+                // Filter out completed tasks
+                tasks = tasks.filter(t => !t.completed);
+            }
+
             if (tasks.length === 0) {
                 const emptyStates = {
                     today: '<div class="empty-state"><div class="empty-state-icon">🎯</div><p>No tasks yet. Pick your ONE thing!</p></div>',
@@ -1337,7 +1351,7 @@
                 listEl.innerHTML = emptyStates[listName];
                 return;
             }
-            
+
             listEl.innerHTML = tasks.map(task => `
                 <div class="task-item ${task.completed ? 'completed' : ''} priority-${task.priority}" 
                      draggable="true" 
@@ -1764,9 +1778,14 @@
 
         function setView(view) {
             currentFilter = view;
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            // Update active state for view filter buttons
+            const filterButtons = document.querySelectorAll('.filter-group')[0].querySelectorAll('.filter-btn');
+            filterButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
             event.target.classList.add('active');
             renderAll();
+            showNotification(`View: ${view.charAt(0).toUpperCase() + view.slice(1)}`, 'success');
         }
 
         function filterPriority(priority) {
