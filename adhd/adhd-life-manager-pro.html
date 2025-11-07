@@ -1287,6 +1287,30 @@
         </div>
     </div>
 
+    <div class="modal" id="calendarModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>📅 Calendar</h2>
+                <button class="modal-close" onclick="closeModal('calendarModal')">&times;</button>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <button onclick="navigateMonth(-1)" style="padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer;">← Prev</button>
+                <h3 id="calendarMonthYear" style="margin: 0; color: var(--primary);"></h3>
+                <button onclick="navigateMonth(1)" style="padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer;">Next →</button>
+            </div>
+
+            <div class="calendar-grid" id="calendarGrid"></div>
+
+            <div id="selectedDateTasks" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; display: none;">
+                <h4 style="margin-top: 0; color: var(--primary);">Tasks on <span id="selectedDateLabel"></span></h4>
+                <div id="tasksOnDate"></div>
+            </div>
+
+            <button class="add-btn" style="width: 100%; margin-top: 15px;" onclick="closeModal('calendarModal')">Close</button>
+        </div>
+    </div>
+
     <div class="modal" id="keyboardHelpModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1468,7 +1492,8 @@
                 subtasks: [],
                 timeBlock: null,  // morning, midday, afternoon, or null
                 notes: '',  // Task notes/details
-                recurrence: null  // {pattern: 'daily'|'weekly'|'monthly', interval: 1, daysOfWeek: [], dayOfMonth: 1}
+                recurrence: null,  // {pattern: 'daily'|'weekly'|'monthly', interval: 1, daysOfWeek: [], dayOfMonth: 1}
+                dueDate: null  // ISO date string or null
             };
             
             data.tasks[listName].push(task);
@@ -1531,6 +1556,7 @@
                             <div class="task-meta">
                                 <span class="task-category cat-${task.category}">${getCategoryIcon(task.category)} ${task.category}</span>
                                 ${task.time ? `<span class="task-time">⏰ ${task.time}</span>` : ''}
+                                ${task.dueDate ? `<span class="task-tag" style="background: ${new Date(task.dueDate) < new Date() ? '#ffebee' : '#e8f5e9'}; color: ${new Date(task.dueDate) < new Date() ? '#c62828' : '#2e7d32'};">📅 ${new Date(task.dueDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric'})}</span>` : ''}
                                 ${task.subtasks && task.subtasks.length > 0 ? `<span class="task-tag">${task.subtasks.filter(s => s.completed).length}/${task.subtasks.length} subtasks</span>` : ''}
                                 ${task.notes && task.notes.trim() ? `<span class="task-tag">📝 Has notes</span>` : ''}
                                 ${task.recurrence ? `<span class="task-tag" style="background: #e3f2fd; color: #1976d2;">🔄 ${task.recurrence.pattern}</span>` : ''}
@@ -1540,6 +1566,7 @@
                             <button class="btn-expand" onclick="toggleSubtasks(${task.id})">📋</button>
                             <button class="btn-expand" onclick="toggleTaskNotes(${task.id})" title="Add notes">📝</button>
                             <button class="btn-expand" onclick="openRecurrenceModal(${task.id})" title="Set recurrence">🔄</button>
+                            <button class="btn-expand" onclick="openCalendarForTask(${task.id})" title="Set due date">📅</button>
                             <button class="btn-priority" onclick="cyclePriority('${listName}', ${task.id})">${getPriorityIcon(task.priority)}</button>
                             <button class="btn-delete" onclick="deleteTask('${listName}', ${task.id})">🗑️</button>
                         </div>
@@ -1864,6 +1891,134 @@
 
             data.tasks[listName].push(newTask);
             showNotification(`🔄 Next occurrence created!`, 'success');
+        }
+
+        // Calendar functionality
+        let currentCalendarDate = new Date();
+        let currentTaskForCalendar = null;
+
+        function showCalendarView() {
+            currentCalendarDate = new Date();
+            currentTaskForCalendar = null;
+            renderCalendar();
+            document.getElementById('calendarModal').classList.add('show');
+        }
+
+        function openCalendarForTask(taskId) {
+            currentTaskForCalendar = taskId;
+            currentCalendarDate = new Date();
+            renderCalendar();
+            document.getElementById('calendarModal').classList.add('show');
+        }
+
+        function navigateMonth(direction) {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+
+            // Update month/year display
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                               'July', 'August', 'September', 'October', 'November', 'December'];
+            document.getElementById('calendarMonthYear').textContent = `${monthNames[month]} ${year}`;
+
+            // Get first day of month and number of days
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+
+            let calendarHTML = '<div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;">';
+
+            // Day headers
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayNames.forEach(day => {
+                calendarHTML += `<div style="text-align: center; font-weight: 600; padding: 8px; color: #666;">${day}</div>`;
+            });
+
+            // Empty cells before first day
+            for (let i = 0; i < firstDay; i++) {
+                calendarHTML += '<div></div>';
+            }
+
+            // Days of month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const dateStr = date.toISOString().split('T')[0];
+                const isToday = date.toDateString() === today.toDateString();
+
+                // Count tasks on this date
+                const allTasks = [...data.tasks.today, ...data.tasks.week, ...data.tasks.someday];
+                const tasksOnDate = allTasks.filter(t => t.dueDate === dateStr);
+
+                calendarHTML += `
+                    <div class="calendar-day ${isToday ? 'today' : ''}"
+                         onclick="selectDate('${dateStr}')"
+                         style="cursor: pointer; padding: 8px; border: 1px solid #ddd; border-radius: 6px; min-height: 60px; ${isToday ? 'background: var(--primary); color: white;' : 'background: white;'}">
+                        <div class="calendar-day-number" style="font-weight: ${isToday ? '700' : '500'};">${day}</div>
+                        ${tasksOnDate.length > 0 ? `<div style="margin-top: 4px; font-size: 0.7em; background: ${isToday ? 'rgba(255,255,255,0.3)' : '#4caf50'}; color: ${isToday ? 'white' : 'white'}; padding: 2px 4px; border-radius: 3px; text-align: center;">${tasksOnDate.length} task${tasksOnDate.length > 1 ? 's' : ''}</div>` : ''}
+                    </div>
+                `;
+            }
+
+            calendarHTML += '</div>';
+            document.getElementById('calendarGrid').innerHTML = calendarHTML;
+        }
+
+        function selectDate(dateStr) {
+            if (currentTaskForCalendar) {
+                // Assign date to specific task
+                let task = null;
+                let listName = null;
+                for (const list in data.tasks) {
+                    task = data.tasks[list].find(t => t.id === currentTaskForCalendar);
+                    if (task) {
+                        listName = list;
+                        break;
+                    }
+                }
+
+                if (task) {
+                    task.dueDate = dateStr;
+                    saveData();
+                    renderList(listName);
+                    showNotification(`Due date set to ${new Date(dateStr).toLocaleDateString()}`, 'success');
+                    closeModal('calendarModal');
+                }
+            } else {
+                // Show tasks on this date
+                showTasksOnDate(dateStr);
+            }
+        }
+
+        function showTasksOnDate(dateStr) {
+            const allTasks = [...data.tasks.today, ...data.tasks.week, ...data.tasks.someday];
+            const tasksOnDate = allTasks.filter(t => t.dueDate === dateStr);
+
+            const selectedDateEl = document.getElementById('selectedDateTasks');
+            const dateLabel = document.getElementById('selectedDateLabel');
+            const tasksEl = document.getElementById('tasksOnDate');
+
+            dateLabel.textContent = new Date(dateStr).toLocaleDateString('en-US', {weekday: 'long', month: 'long', day: 'numeric'});
+
+            if (tasksOnDate.length === 0) {
+                tasksEl.innerHTML = '<p style="color: #666; font-style: italic;">No tasks scheduled for this date</p>';
+            } else {
+                tasksEl.innerHTML = tasksOnDate.map(task => `
+                    <div style="background: white; padding: 10px; margin-bottom: 8px; border-radius: 6px; border-left: 3px solid ${
+                        task.priority === 'high' ? '#ff6b6b' : task.priority === 'medium' ? '#ffd93d' : '#4ecdc4'
+                    };">
+                        <div style="font-weight: 600;">${task.text}</div>
+                        <div style="font-size: 0.85em; color: #666; margin-top: 4px;">
+                            ${task.category} • ${task.priority} priority
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            selectedDateEl.style.display = 'block';
         }
 
         function renderWins() {
