@@ -1231,6 +1231,62 @@
         </div>
     </div>
 
+    <div class="modal" id="recurrenceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔄 Set Recurrence</h2>
+                <button class="modal-close" onclick="closeModal('recurrenceModal')">&times;</button>
+            </div>
+
+            <div class="form-group">
+                <label>Pattern</label>
+                <select id="recurrencePattern" onchange="updateRecurrenceOptions()">
+                    <option value="none">No Recurrence</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="weeklyOptions" style="display: none;">
+                <label>Repeat on</label>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <label style="display: flex; align-items: center; gap: 4px;">
+                        <input type="checkbox" value="1" class="day-checkbox"> Mon
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 4px;">
+                        <input type="checkbox" value="2" class="day-checkbox"> Tue
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 4px;">
+                        <input type="checkbox" value="3" class="day-checkbox"> Wed
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 4px;">
+                        <input type="checkbox" value="4" class="day-checkbox"> Thu
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 4px;">
+                        <input type="checkbox" value="5" class="day-checkbox"> Fri
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 4px;">
+                        <input type="checkbox" value="6" class="day-checkbox"> Sat
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 4px;">
+                        <input type="checkbox" value="0" class="day-checkbox"> Sun
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group" id="monthlyOptions" style="display: none;">
+                <label>Day of month</label>
+                <input type="number" id="dayOfMonth" min="1" max="31" value="1">
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button class="add-btn" style="flex: 1;" onclick="saveRecurrence()">Save</button>
+                <button class="add-btn" style="flex: 1; background: #666;" onclick="closeModal('recurrenceModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="keyboardHelpModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1411,7 +1467,8 @@
                 time: time,
                 subtasks: [],
                 timeBlock: null,  // morning, midday, afternoon, or null
-                notes: ''  // Task notes/details
+                notes: '',  // Task notes/details
+                recurrence: null  // {pattern: 'daily'|'weekly'|'monthly', interval: 1, daysOfWeek: [], dayOfMonth: 1}
             };
             
             data.tasks[listName].push(task);
@@ -1476,11 +1533,13 @@
                                 ${task.time ? `<span class="task-time">⏰ ${task.time}</span>` : ''}
                                 ${task.subtasks && task.subtasks.length > 0 ? `<span class="task-tag">${task.subtasks.filter(s => s.completed).length}/${task.subtasks.length} subtasks</span>` : ''}
                                 ${task.notes && task.notes.trim() ? `<span class="task-tag">📝 Has notes</span>` : ''}
+                                ${task.recurrence ? `<span class="task-tag" style="background: #e3f2fd; color: #1976d2;">🔄 ${task.recurrence.pattern}</span>` : ''}
                             </div>
                         </div>
                         <div class="task-actions">
                             <button class="btn-expand" onclick="toggleSubtasks(${task.id})">📋</button>
                             <button class="btn-expand" onclick="toggleTaskNotes(${task.id})" title="Add notes">📝</button>
+                            <button class="btn-expand" onclick="openRecurrenceModal(${task.id})" title="Set recurrence">🔄</button>
                             <button class="btn-priority" onclick="cyclePriority('${listName}', ${task.id})">${getPriorityIcon(task.priority)}</button>
                             <button class="btn-delete" onclick="deleteTask('${listName}', ${task.id})">🗑️</button>
                         </div>
@@ -1525,7 +1584,7 @@
             const task = data.tasks[listName].find(t => t.id === taskId);
             if (task) {
                 task.completed = !task.completed;
-                
+
                 if (task.completed) {
                     data.wins.push({
                         text: task.text,
@@ -1534,8 +1593,13 @@
                     });
                     showNotification('🎉 Great job!', 'success');
                     renderWins();
+
+                    // Create next occurrence if recurring
+                    if (task.recurrence) {
+                        createNextOccurrence(task, listName);
+                    }
                 }
-                
+
                 saveData();
                 renderList(listName);
             }
@@ -1696,6 +1760,110 @@
                 renderList(listName);  // Re-render to update "Has notes" indicator
                 showNotification('Notes saved', 'success');
             }
+        }
+
+        let currentRecurrenceTaskId = null;
+
+        function openRecurrenceModal(taskId) {
+            currentRecurrenceTaskId = taskId;
+
+            // Find the task
+            let task = null;
+            for (const list in data.tasks) {
+                task = data.tasks[list].find(t => t.id === taskId);
+                if (task) break;
+            }
+
+            if (task) {
+                // Set current values if recurrence exists
+                if (task.recurrence) {
+                    document.getElementById('recurrencePattern').value = task.recurrence.pattern;
+                    updateRecurrenceOptions();
+
+                    if (task.recurrence.pattern === 'weekly' && task.recurrence.daysOfWeek) {
+                        task.recurrence.daysOfWeek.forEach(day => {
+                            const checkbox = document.querySelector(`.day-checkbox[value="${day}"]`);
+                            if (checkbox) checkbox.checked = true;
+                        });
+                    }
+
+                    if (task.recurrence.pattern === 'monthly' && task.recurrence.dayOfMonth) {
+                        document.getElementById('dayOfMonth').value = task.recurrence.dayOfMonth;
+                    }
+                } else {
+                    document.getElementById('recurrencePattern').value = 'none';
+                    updateRecurrenceOptions();
+                }
+
+                document.getElementById('recurrenceModal').classList.add('show');
+            }
+        }
+
+        function updateRecurrenceOptions() {
+            const pattern = document.getElementById('recurrencePattern').value;
+            document.getElementById('weeklyOptions').style.display = pattern === 'weekly' ? 'block' : 'none';
+            document.getElementById('monthlyOptions').style.display = pattern === 'monthly' ? 'block' : 'none';
+        }
+
+        function saveRecurrence() {
+            const pattern = document.getElementById('recurrencePattern').value;
+
+            // Find the task
+            let task = null;
+            let listName = null;
+            for (const list in data.tasks) {
+                task = data.tasks[list].find(t => t.id === currentRecurrenceTaskId);
+                if (task) {
+                    listName = list;
+                    break;
+                }
+            }
+
+            if (!task) return;
+
+            if (pattern === 'none') {
+                task.recurrence = null;
+                showNotification('Recurrence removed', 'success');
+            } else if (pattern === 'daily') {
+                task.recurrence = { pattern: 'daily' };
+                showNotification('Set to repeat daily', 'success');
+            } else if (pattern === 'weekly') {
+                const daysOfWeek = Array.from(document.querySelectorAll('.day-checkbox:checked'))
+                    .map(cb => parseInt(cb.value));
+
+                if (daysOfWeek.length === 0) {
+                    showNotification('Please select at least one day', 'error');
+                    return;
+                }
+
+                task.recurrence = { pattern: 'weekly', daysOfWeek };
+                showNotification('Set to repeat weekly', 'success');
+            } else if (pattern === 'monthly') {
+                const dayOfMonth = parseInt(document.getElementById('dayOfMonth').value);
+                task.recurrence = { pattern: 'monthly', dayOfMonth };
+                showNotification('Set to repeat monthly', 'success');
+            }
+
+            saveData();
+            renderList(listName);
+            closeModal('recurrenceModal');
+
+            // Reset checkboxes
+            document.querySelectorAll('.day-checkbox').forEach(cb => cb.checked = false);
+        }
+
+        function createNextOccurrence(task, listName) {
+            if (!task.recurrence) return;
+
+            const newTask = {
+                ...task,
+                id: Date.now() + Math.random(),  // Unique ID
+                completed: false,
+                created: new Date().toISOString()
+            };
+
+            data.tasks[listName].push(newTask);
+            showNotification(`🔄 Next occurrence created!`, 'success');
         }
 
         function renderWins() {
