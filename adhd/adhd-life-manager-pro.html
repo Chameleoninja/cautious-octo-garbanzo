@@ -1358,12 +1358,12 @@
                             </div>
                         </div>
                         <div class="task-actions">
-                            ${task.subtasks ? `<button class="btn-expand" onclick="toggleSubtasks(${task.id})">📋</button>` : ''}
+                            <button class="btn-expand" onclick="toggleSubtasks(${task.id})">📋</button>
                             <button class="btn-priority" onclick="cyclePriority('${listName}', ${task.id})">${getPriorityIcon(task.priority)}</button>
                             <button class="btn-delete" onclick="deleteTask('${listName}', ${task.id})">🗑️</button>
                         </div>
                     </div>
-                    ${task.subtasks && task.subtasks.length > 0 ? renderSubtasks(task) : ''}
+                    ${renderSubtasks(task)}
                 </div>
             `).join('');
         }
@@ -1379,15 +1379,21 @@
         }
 
         function renderSubtasks(task) {
+            const subtasks = task.subtasks || [];
             return `
                 <div class="subtasks" id="subtasks-${task.id}">
-                    ${task.subtasks.map((sub, idx) => `
+                    ${subtasks.map((sub, idx) => `
                         <div class="subtask-item">
-                            <input type="checkbox" ${sub.completed ? 'checked' : ''} 
+                            <input type="checkbox" ${sub.completed ? 'checked' : ''}
                                    onchange="toggleSubtask(${task.id}, ${idx})">
                             <span ${sub.completed ? 'style="text-decoration: line-through; opacity: 0.6;"' : ''}>${sub.text}</span>
+                            <button onclick="deleteSubtask(${task.id}, ${idx})" style="margin-left: auto; padding: 4px 8px; background: #ff6b6b; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8em;">×</button>
                         </div>
                     `).join('')}
+                    <div class="subtask-input">
+                        <input type="text" id="subtask-input-${task.id}" placeholder="Add subtask...">
+                        <button onclick="addSubtask(${task.id})">+</button>
+                    </div>
                 </div>
             `;
         }
@@ -1427,6 +1433,87 @@
                 const priorities = ['low', 'medium', 'high'];
                 const currentIndex = priorities.indexOf(task.priority);
                 task.priority = priorities[(currentIndex + 1) % priorities.length];
+                saveData();
+                renderList(listName);
+            }
+        }
+
+        function toggleSubtasks(taskId) {
+            const subtasksEl = document.getElementById(`subtasks-${taskId}`);
+            if (subtasksEl) {
+                subtasksEl.classList.toggle('expanded');
+            }
+        }
+
+        function addSubtask(taskId) {
+            const input = document.getElementById(`subtask-input-${taskId}`);
+            const text = input.value.trim();
+
+            if (!text) {
+                showNotification('Please enter a subtask', 'error');
+                return;
+            }
+
+            // Find the task in all lists
+            let task = null;
+            let listName = null;
+            for (const list in data.tasks) {
+                task = data.tasks[list].find(t => t.id === taskId);
+                if (task) {
+                    listName = list;
+                    break;
+                }
+            }
+
+            if (task) {
+                if (!task.subtasks) {
+                    task.subtasks = [];
+                }
+                task.subtasks.push({
+                    text: text,
+                    completed: false
+                });
+                input.value = '';
+                saveData();
+                renderList(listName);
+                showNotification('Subtask added!', 'success');
+            }
+        }
+
+        function deleteSubtask(taskId, subtaskIdx) {
+            // Find the task in all lists
+            let task = null;
+            let listName = null;
+            for (const list in data.tasks) {
+                task = data.tasks[list].find(t => t.id === taskId);
+                if (task) {
+                    listName = list;
+                    break;
+                }
+            }
+
+            if (task && task.subtasks) {
+                task.subtasks.splice(subtaskIdx, 1);
+                saveData();
+                renderList(listName);
+                showNotification('Subtask deleted', 'success');
+            }
+        }
+
+        function toggleSubtask(taskId, subtaskIdx) {
+            // Find the task in all lists
+            let task = null;
+            let listName = null;
+            for (const list in data.tasks) {
+                task = data.tasks[list].find(t => t.id === taskId);
+                if (task) {
+                    listName = list;
+                    break;
+                }
+            }
+
+            if (task && task.subtasks && task.subtasks[subtaskIdx]) {
+                task.subtasks[subtaskIdx].completed = !task.subtasks[subtaskIdx].completed;
                 saveData();
                 renderList(listName);
             }
