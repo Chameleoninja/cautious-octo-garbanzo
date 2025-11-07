@@ -884,6 +884,9 @@
                     <div class="stat-label">Day Streak</div>
                 </div>
             </div>
+            <button onclick="showAnalytics()" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span>📊</span> View Detailed Analytics
+            </button>
         </div>
 
         <!-- Filters -->
@@ -1308,6 +1311,42 @@
             </div>
 
             <button class="add-btn" style="width: 100%; margin-top: 15px;" onclick="closeModal('calendarModal')">Close</button>
+        </div>
+    </div>
+
+    <div class="modal" id="analyticsModal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2>📊 Analytics & Insights</h2>
+                <button class="modal-close" onclick="closeModal('analyticsModal')">&times;</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white; text-align: center;">
+                    <div style="font-size: 2em; font-weight: bold;" id="analyticsCompletionRate">0%</div>
+                    <div style="font-size: 0.9em; opacity: 0.9;">Completion Rate</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 20px; border-radius: 10px; color: white; text-align: center;">
+                    <div style="font-size: 2em; font-weight: bold;" id="analyticsTasksPerDay">0</div>
+                    <div style="font-size: 0.9em; opacity: 0.9;">Tasks/Day</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 20px; border-radius: 10px; color: white; text-align: center;">
+                    <div style="font-size: 2em; font-weight: bold;" id="analyticsStreak">0</div>
+                    <div style="font-size: 0.9em; opacity: 0.9;">Day Streak</div>
+                </div>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="margin-top: 0; color: var(--primary);">📈 Category Breakdown</h3>
+                <div id="categoryBreakdown"></div>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                <h3 style="margin-top: 0; color: var(--primary);">⚡ Most Productive Times</h3>
+                <div id="productiveTimes"></div>
+            </div>
+
+            <button class="add-btn" style="width: 100%; margin-top: 20px;" onclick="closeModal('analyticsModal')">Close</button>
         </div>
     </div>
 
@@ -2019,6 +2058,138 @@
             }
 
             selectedDateEl.style.display = 'block';
+        }
+
+        // Analytics functionality
+        function showAnalytics() {
+            calculateAndRenderAnalytics();
+            document.getElementById('analyticsModal').classList.add('show');
+        }
+
+        function calculateAndRenderAnalytics() {
+            const allTasks = [...data.tasks.today, ...data.tasks.week, ...data.tasks.someday];
+            const completed = allTasks.filter(t => t.completed);
+            const total = allTasks.length;
+
+            // Completion rate
+            const completionRate = total > 0 ? Math.round((completed.length / total) * 100) : 0;
+            document.getElementById('analyticsCompletionRate').textContent = completionRate + '%';
+
+            // Tasks per day (based on created dates in last 7 days)
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            const recentTasks = allTasks.filter(t => new Date(t.created) >= weekAgo);
+            const tasksPerDay = (recentTasks.length / 7).toFixed(1);
+            document.getElementById('analyticsTasksPerDay').textContent = tasksPerDay;
+
+            // Streak (consecutive days with completed tasks)
+            const streak = calculateStreak();
+            document.getElementById('analyticsStreak').textContent = streak;
+
+            // Category breakdown
+            renderCategoryBreakdown(allTasks);
+
+            // Productive times (based on energy logs)
+            renderProductiveTimes();
+        }
+
+        function calculateStreak() {
+            const wins = data.wins || [];
+            if (wins.length === 0) return 0;
+
+            let streak = 0;
+            let currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0);
+
+            while (true) {
+                const dateStr = currentDate.toISOString().split('T')[0];
+                const hasWins = wins.some(w => w.date.startsWith(dateStr));
+
+                if (hasWins) {
+                    streak++;
+                    currentDate.setDate(currentDate.getDate() - 1);
+                } else {
+                    break;
+                }
+
+                if (streak > 100) break; // Safety limit
+            }
+
+            return streak;
+        }
+
+        function renderCategoryBreakdown(tasks) {
+            const categories = {};
+            tasks.forEach(task => {
+                categories[task.category] = (categories[task.category] || 0) + 1;
+            });
+
+            const total = tasks.length || 1;
+            const breakdownEl = document.getElementById('categoryBreakdown');
+
+            let html = '';
+            Object.entries(categories).forEach(([category, count]) => {
+                const percentage = Math.round((count / total) * 100);
+                const icon = {work: '💼', home: '🏠', health: '❤️', personal: '⭐'}[category] || '📌';
+
+                html += `
+                    <div style="margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <span>${icon} ${category.charAt(0).toUpperCase() + category.slice(1)}</span>
+                            <span style="font-weight: 600;">${count} tasks (${percentage}%)</span>
+                        </div>
+                        <div style="background: #ddd; height: 8px; border-radius: 4px; overflow: hidden;">
+                            <div style="background: var(--primary); height: 100%; width: ${percentage}%;"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            breakdownEl.innerHTML = html || '<p style="color: #666;">No tasks yet</p>';
+        }
+
+        function renderProductiveTimes() {
+            const energyLogs = data.energyLog || [];
+            const timesEl = document.getElementById('productiveTimes');
+
+            if (energyLogs.length < 3) {
+                timesEl.innerHTML = '<p style="color: #666; font-style: italic;">Complete a few energy checks to see your patterns!</p>';
+                return;
+            }
+
+            // Calculate average energy by hour
+            const hourlyEnergy = {};
+            energyLogs.forEach(log => {
+                const hour = new Date(log.timestamp).getHours();
+                if (!hourlyEnergy[hour]) {
+                    hourlyEnergy[hour] = {total: 0, count: 0};
+                }
+                hourlyEnergy[hour].total += log.energy;
+                hourlyEnergy[hour].count++;
+            });
+
+            // Find top 3 productive hours
+            const avgByHour = Object.entries(hourlyEnergy)
+                .map(([hour, data]) => ({
+                    hour: parseInt(hour),
+                    avg: data.total / data.count
+                }))
+                .sort((a, b) => b.avg - a.avg)
+                .slice(0, 3);
+
+            let html = avgByHour.map((item, idx) => {
+                const emoji = idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉';
+                const hourStr = item.hour % 12 || 12;
+                const ampm = item.hour >= 12 ? 'PM' : 'AM';
+                return `
+                    <div style="display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 6px; margin-bottom: 8px;">
+                        <span>${emoji} ${hourStr}:00 ${ampm}</span>
+                        <span style="color: var(--primary); font-weight: 600;">${item.avg.toFixed(1)}/5 energy</span>
+                    </div>
+                `;
+            }).join('');
+
+            timesEl.innerHTML = html;
         }
 
         function renderWins() {
