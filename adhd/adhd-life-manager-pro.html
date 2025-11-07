@@ -1781,7 +1781,47 @@
 
         function searchTasks() {
             const query = document.getElementById('searchBox').value.toLowerCase();
-            // Implementation for search
+
+            if (!query) {
+                // Show all tasks if search is empty
+                document.querySelectorAll('.task-item').forEach(item => {
+                    item.style.display = '';
+                });
+                return;
+            }
+
+            // Search through all task items
+            document.querySelectorAll('.task-item').forEach(item => {
+                const taskText = item.querySelector('.task-text')?.textContent.toLowerCase() || '';
+                const taskCategory = item.querySelector('.task-category')?.textContent.toLowerCase() || '';
+                const subtaskTexts = Array.from(item.querySelectorAll('.subtask-item span'))
+                    .map(span => span.textContent.toLowerCase())
+                    .join(' ');
+
+                const searchableText = `${taskText} ${taskCategory} ${subtaskTexts}`;
+
+                if (searchableText.includes(query)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Show empty state if no results in a list
+            ['today', 'week', 'someday'].forEach(listName => {
+                const listEl = document.getElementById(listName + 'List');
+                const visibleTasks = listEl.querySelectorAll('.task-item:not([style*="display: none"])');
+
+                if (visibleTasks.length === 0 && query) {
+                    const emptyMsg = document.createElement('div');
+                    emptyMsg.className = 'empty-state search-empty';
+                    emptyMsg.innerHTML = '<div class="empty-state-icon">🔍</div><p>No tasks match your search</p>';
+                    listEl.appendChild(emptyMsg);
+                } else {
+                    // Remove previous search empty states
+                    listEl.querySelectorAll('.search-empty').forEach(el => el.remove());
+                }
+            });
         }
 
         // Keyboard shortcuts
