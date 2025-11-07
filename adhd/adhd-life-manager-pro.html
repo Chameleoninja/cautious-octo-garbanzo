@@ -857,7 +857,9 @@
                 <button class="quick-btn btn-medication" onclick="openMedicationLog()">💊 Meds</button>
                 <button class="quick-btn btn-weekly" onclick="openWeeklyReview()">📊 Review</button>
                 <button class="quick-btn btn-export" onclick="exportData()">💾 Export</button>
+                <button class="quick-btn btn-export" onclick="importData()">📥 Import</button>
             </div>
+            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleImportFile(event)">
 
             <!-- Stats Dashboard -->
             <div class="stats-grid">
@@ -1774,6 +1776,69 @@
             link.download = `adhd-manager-backup-${new Date().toISOString().split('T')[0]}.json`;
             link.click();
             showNotification('Data exported!', 'success');
+        }
+
+        function importData() {
+            // Trigger file input click
+            document.getElementById('importFile').click();
+        }
+
+        function handleImportFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.name.endsWith('.json')) {
+                showNotification('Please select a JSON file', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+
+                    // Validate data structure
+                    if (!importedData.tasks || !importedData.tasks.today) {
+                        showNotification('Invalid backup file format', 'error');
+                        return;
+                    }
+
+                    // Ask user: merge or replace?
+                    const shouldReplace = confirm(
+                        'Replace all data with imported backup?\n\n' +
+                        'OK = Replace everything\n' +
+                        'Cancel = Merge with existing data'
+                    );
+
+                    if (shouldReplace) {
+                        // Replace all data
+                        data = importedData;
+                        showNotification('✅ Data replaced successfully!', 'success');
+                    } else {
+                        // Merge data
+                        if (importedData.tasks) {
+                            data.tasks.today.push(...importedData.tasks.today);
+                            data.tasks.week.push(...importedData.tasks.week);
+                            data.tasks.someday.push(...importedData.tasks.someday);
+                        }
+                        if (importedData.wins) data.wins.push(...importedData.wins);
+                        if (importedData.energyLog) data.energyLog.push(...importedData.energyLog);
+                        if (importedData.medicationLog) data.medicationLog.push(...importedData.medicationLog);
+                        if (importedData.focusSessions) data.focusSessions.push(...importedData.focusSessions);
+                        showNotification('✅ Data merged successfully!', 'success');
+                    }
+
+                    saveData();
+                    renderAll();
+                } catch (error) {
+                    console.error('Import error:', error);
+                    showNotification('❌ Failed to import file', 'error');
+                }
+            };
+
+            reader.readAsText(file);
+            // Reset file input
+            event.target.value = '';
         }
 
         function setView(view) {
