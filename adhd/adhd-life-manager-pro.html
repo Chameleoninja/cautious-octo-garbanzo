@@ -1410,7 +1410,8 @@
                 category: category,
                 time: time,
                 subtasks: [],
-                timeBlock: null  // morning, midday, afternoon, or null
+                timeBlock: null,  // morning, midday, afternoon, or null
+                notes: ''  // Task notes/details
             };
             
             data.tasks[listName].push(task);
@@ -1474,15 +1475,18 @@
                                 <span class="task-category cat-${task.category}">${getCategoryIcon(task.category)} ${task.category}</span>
                                 ${task.time ? `<span class="task-time">⏰ ${task.time}</span>` : ''}
                                 ${task.subtasks && task.subtasks.length > 0 ? `<span class="task-tag">${task.subtasks.filter(s => s.completed).length}/${task.subtasks.length} subtasks</span>` : ''}
+                                ${task.notes && task.notes.trim() ? `<span class="task-tag">📝 Has notes</span>` : ''}
                             </div>
                         </div>
                         <div class="task-actions">
                             <button class="btn-expand" onclick="toggleSubtasks(${task.id})">📋</button>
+                            <button class="btn-expand" onclick="toggleTaskNotes(${task.id})" title="Add notes">📝</button>
                             <button class="btn-priority" onclick="cyclePriority('${listName}', ${task.id})">${getPriorityIcon(task.priority)}</button>
                             <button class="btn-delete" onclick="deleteTask('${listName}', ${task.id})">🗑️</button>
                         </div>
                     </div>
                     ${renderSubtasks(task)}
+                    ${renderTaskNotes(task)}
                 </div>
             `).join('');
         }
@@ -1635,6 +1639,62 @@
                 task.subtasks[subtaskIdx].completed = !task.subtasks[subtaskIdx].completed;
                 saveData();
                 renderList(listName);
+            }
+        }
+
+        function renderTaskNotes(task) {
+            return `
+                <div class="task-notes" id="notes-${task.id}" style="display: none; margin-top: 10px; padding-left: 30px;">
+                    <div style="background: #f8f9fa; padding: 12px; border-radius: 6px; border-left: 3px solid var(--primary);">
+                        <div style="font-weight: 600; margin-bottom: 8px; color: var(--primary);">📝 Notes</div>
+                        <textarea id="notes-text-${task.id}"
+                                  style="width: 100%; min-height: 80px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9em; font-family: inherit; resize: vertical;"
+                                  placeholder="Add notes, context, links..."
+                                  onblur="saveTaskNotes(${task.id})">${task.notes || ''}</textarea>
+                        <div style="font-size: 0.8em; color: #666; margin-top: 4px;">
+                            💡 Tip: Add links, context, or reminders here. Auto-saves when you click away.
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleTaskNotes(taskId) {
+            const notesEl = document.getElementById(`notes-${taskId}`);
+            if (notesEl) {
+                const isVisible = notesEl.style.display !== 'none';
+                notesEl.style.display = isVisible ? 'none' : 'block';
+
+                if (!isVisible) {
+                    // Focus the textarea when opening
+                    setTimeout(() => {
+                        const textarea = document.getElementById(`notes-text-${taskId}`);
+                        if (textarea) textarea.focus();
+                    }, 100);
+                }
+            }
+        }
+
+        function saveTaskNotes(taskId) {
+            const textarea = document.getElementById(`notes-text-${taskId}`);
+            if (!textarea) return;
+
+            // Find the task in all lists
+            let task = null;
+            let listName = null;
+            for (const list in data.tasks) {
+                task = data.tasks[list].find(t => t.id === taskId);
+                if (task) {
+                    listName = list;
+                    break;
+                }
+            }
+
+            if (task) {
+                task.notes = textarea.value;
+                saveData();
+                renderList(listName);  // Re-render to update "Has notes" indicator
+                showNotification('Notes saved', 'success');
             }
         }
 
